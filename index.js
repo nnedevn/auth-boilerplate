@@ -3,10 +3,14 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var ejsLayouts = require('express-ejs-layouts');
 var passport = require('./config/passportConfig.js');
-var isLoggedIn = require('./middleware/isLoggedIn.js');
+
 var flash = require('connect-flash');
 var session = require('express-session');
 var app = express();
+
+// Set up Middleware
+var isLoggedIn = require('./middleware/isLoggedIn.js');
+var getIndeedData = require('./middleware/getIndeedData.js')
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -36,6 +40,8 @@ app.get('/', function(req, res) {
 });
 
 app.get('/profile', isLoggedIn, function(req, res) {
+  
+  getIndeedData();
   res.render('profile.ejs')
 });
 
